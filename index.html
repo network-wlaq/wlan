@@ -1,50 +1,515 @@
-!DOCTYPE html
-html lang=zh-CN
-head
-    meta charset=UTF-8
-    meta name=viewport content=width=device-width, initial-scale=1.0
-    title我的第一个公网网页title
-    style
-         { margin 0; padding 0; box-sizing border-box; }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="静墨·叙事 — 个人技术博客 / 生活随想，优雅简约的静态博客网页，完美适配GitHub Pages">
+    <title>静墨叙事 | 沉淀思考 · 书写时光</title>
+    <!-- 干净优雅的博客风格，完全响应式，适合作为GitHub Pages的个人站点 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            background linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height 100vh;
-            display flex;
-            justify-content center;
-            align-items center;
-            padding 20px;
+            background: #f9fafb;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+            color: #1f2a3e;
+            line-height: 1.65;
+            scroll-behavior: smooth;
         }
-        .card {
-            background white;
-            border-radius 24px;
-            padding 48px 32px;
-            max-width 600px;
-            text-align center;
-            box-shadow 0 20px 60px rgba(0,0,0,0.3);
+
+        /* 优雅滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        h1 { color #333; margin-bottom 16px; font-size 2rem; }
-        p { color #666; line-height 1.6; margin-bottom 16px; }
-        .date { 
-            background #f0f0f0; 
-            display inline-block; 
-            padding 8px 20px; 
-            border-radius 40px; 
-            margin-top 24px;
-            font-size 0.85rem;
-            color #764ba2;
+        ::-webkit-scrollbar-track {
+            background: #eef2f6;
         }
-    style
-head
-body
-    div class=card
-        h1🌍 你好，互联网！h1
-        p这是一个从零开始创建的静态网页。p
-        p现在，它已经可以通过公网被全世界访问了。p
-        div class=date id=datediv
-    div
-    script
-        document.getElementById('date').innerText = '发布于 ' + new Date().toLocaleDateString('zh-CN');
-    script
-body
-html
+        ::-webkit-scrollbar-thumb {
+            background: #b9c3d0;
+            border-radius: 10px;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ========= 头部导航 ========= */
+        .site-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e4e9f0;
+        }
+        .logo-area h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(130deg, #1F2B3C, #2C5F8A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .logo-area p {
+            font-size: 0.8rem;
+            color: #658098;
+            margin-top: 4px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #334155;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: #2c6e9e;
+            border-bottom: 2px solid #2c6e9e;
+            padding-bottom: 4px;
+        }
+
+        /* ========= 主网格布局 (博客经典两栏) ========= */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2.5rem;
+        }
+
+        /* ---------- 文章区域 ---------- */
+        .posts-section .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.8rem;
+            padding-left: 0.5rem;
+            border-left: 5px solid #3b82f6;
+            color: #0c4a6e;
+        }
+        .post-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.03), 0 0 0 1px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            border: 1px solid #edf2f7;
+        }
+        .post-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.08);
+            border-color: #dce5ef;
+        }
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #6c86a3;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .post-meta .date {
+            background: #eff3f8;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+        }
+        .post-meta .tag {
+            background: #e9f0f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            color: #2c6e9e;
+        }
+        .post-title {
+            font-size: 1.6rem;
+            font-weight: 650;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+        .post-title a {
+            text-decoration: none;
+            color: #1e293b;
+            transition: color 0.2s;
+        }
+        .post-title a:hover {
+            color: #2563eb;
+        }
+        .post-excerpt {
+            color: #334155;
+            margin: 0.8rem 0 1.2rem 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .read-more {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2563eb;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+        .read-more:hover {
+            gap: 10px;
+            text-decoration: underline;
+        }
+
+        /* ---------- 侧边栏 ---------- */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .sidebar-widget {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            padding: 1.6rem;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e9f2;
+            display: inline-block;
+        }
+        /* 博主简介 */
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #cbdde9, #b3c4d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .bio-text {
+            font-size: 0.9rem;
+            color: #2c3f5c;
+            margin: 0.5rem 0;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: #537895;
+        }
+        /* 近期文章列表 */
+        .recent-list {
+            list-style: none;
+        }
+        .recent-list li {
+            margin-bottom: 0.8rem;
+            border-bottom: 1px dashed #e9eff5;
+            padding-bottom: 0.6rem;
+        }
+        .recent-list li a {
+            text-decoration: none;
+            color: #2c4f6e;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .recent-list li a:hover {
+            color: #2563eb;
+            padding-left: 3px;
+        }
+        .recent-date {
+            display: block;
+            font-size: 0.7rem;
+            color: #7e95b0;
+            margin-top: 0.2rem;
+        }
+        /* 标签云 */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag-cloud span {
+            background: #eef3fc;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #2b6599;
+            cursor: default;
+        }
+
+        /* 页脚 */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem 0 1.5rem;
+            border-top: 1px solid #e2e9f0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #5f7d9c;
+        }
+        .footer a {
+            color: #2c6e9e;
+            text-decoration: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 880px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .site-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .nav-links {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+            .post-title {
+                font-size: 1.35rem;
+            }
+        }
+        @media (max-width: 520px) {
+            .container {
+                padding: 1rem;
+            }
+            .post-card {
+                padding: 1.2rem;
+            }
+        }
+
+        /* 代码风格微调 */
+        code {
+            background: #eef3fc;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        hr {
+            margin: 1rem 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #e0e8f0, transparent);
+        }
+        .github-corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1f2a44;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 99;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+        .github-corner:hover {
+            opacity: 1;
+            background: #0e2a3b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 博客头部 -->
+    <header class="site-header">
+        <div class="logo-area">
+            <h1>📓 静墨叙事</h1>
+            <p>「记录技术思考，收藏日常灵感」</p>
+        </div>
+        <div class="nav-links">
+            <a href="#">首页</a>
+            <a href="#">归档</a>
+            <a href="#">关于</a>
+            <a href="#">搜索</a>
+        </div>
+    </header>
+
+    <!-- 博客主内容：两栏布局 -->
+    <div class="blog-grid">
+        <!-- 左侧：文章列表区域 -->
+        <main class="posts-section">
+            <div class="section-title">📌 最新发布</div>
+
+            <!-- 文章卡片 1 -->
+            <article class="post-card">
+                <div class="post-meta">
+                    <span class="date">📅 2025年4月20日</span>
+                    <span class="tag">💻 前端杂谈</span>
+                    <span class="tag">✨ 静态博客</span>
+                </div>
+                <h2 class="post-title">
+                    <a href="#">从零搭建个人博客，拥抱GitHub Pages</a>
+                </h2>
+                <div class="post-excerpt">
+                    一直想拥有一个完全属于自己的小站？不需要服务器、不用买域名，甚至10分钟就能上线。本文记录我如何纯手工编写HTML/CSS，并用GitHub Pages部署好看又优雅的博客过程，附带踩坑指南...
+                </div>
+                <a href="#" class="read-more">继续阅读 →</a>
+            </article>
+
+            <!-- 文章卡片 2 -->
+            <article class="post-card">
+                <div class="post-meta">
+                    <span class="date">📅 2025年4月15日</span>
+                    <span class="tag">🎨 CSS 设计</span>
+                    <span class="tag">📐 响应式</span>
+                </div>
+                <h2 class="post-title">
+                    <a href="#">现代CSS魔法：优雅的博客排版技巧</a>
+                </h2>
+                <div class="post-excerpt">
+                    字体、呼吸感、边框阴影、卡片微交互... 好的博客排版让读文章变成享受。分享几个无需框架就能提升网页质感的CSS技巧，并且完全适配移动端，让你的博客在手机上同样惊艳...
+                </div>
+                <a href="#" class="read-more">继续阅读 →</a>
+            </article>
+
+            <!-- 文章卡片 3 -->
+            <article class="post-card">
+                <div class="post-meta">
+                    <span class="date">📅 2025年4月8日</span>
+                    <span class="tag">🛠️ 开发者工具</span>
+                    <span class="tag">⚡ 效率</span>
+                </div>
+                <h2 class="post-title">
+                    <a href="#">程序员写作指南：Markdown + 静态站点生成器</a>
+                </h2>
+                <div class="post-excerpt">
+                    虽然这个博客是纯手工HTML，但平时写技术文章可以配合Markdown转换。今天聊聊如何让写作与部署效率最大化，以及如何把内容优雅地嵌入自定义博客主题，感受指尖流出的文字力量...
+                </div>
+                <a href="#" class="read-more">继续阅读 →</a>
+            </article>
+
+            <!-- 文章卡片 4：更有生活气息 -->
+            <article class="post-card">
+                <div class="post-meta">
+                    <span class="date">📅 2025年4月1日</span>
+                    <span class="tag">🍃 生活随想</span>
+                    <span class="tag">📖 书影</span>
+                </div>
+                <h2 class="post-title">
+                    <a href="#">春日书单：三本让大脑深呼吸的好书</a>
+                </h2>
+                <div class="post-excerpt">
+                    在代码与逻辑之外，需要一些柔软的文字来平衡。最近在读《旅行的艺术》《呼吸》以及《设计中的设计》，摘录了几段打动我的句子，分享给同样喜欢阅读的朋友，愿你也找到内心秩序...
+                </div>
+                <a href="#" class="read-more">继续阅读 →</a>
+            </article>
+
+            <!-- 分页占位 (美观简约) -->
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <span style="background: #eef2f8; padding: 0.3rem 1rem; border-radius: 30px; color:#3f6b8c;">1 / 2</span>
+                <span style="margin-left: 1rem;">→</span>
+            </div>
+        </main>
+
+        <!-- 右侧边栏 -->
+        <aside class="sidebar">
+            <!-- 博主卡片 -->
+            <div class="sidebar-widget">
+                <div class="avatar">✍️</div>
+                <h3 class="widget-title">林川不止</h3>
+                <div class="bio-text">
+                    全栈开发 / 独立创作者。相信优雅的代码和干净的文字可以共存。现居杭州，热爱开源与分享。
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub">🐙 GitHub</a>
+                    <a href="#" aria-label="Twitter">🐦 X</a>
+                    <a href="#" aria-label="邮箱">📧 联系</a>
+                </div>
+            </div>
+
+            <!-- 近期文章 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📋 近期笔墨</h3>
+                <ul class="recent-list">
+                    <li><a href="#">部署静态网页完全指南：GitHub Pages 深度教程</a><span class="recent-date">2025-04-18</span></li>
+                    <li><a href="#">CSS Grid + Flex 混用布局实战</a><span class="recent-date">2025-04-12</span></li>
+                    <li><a href="#">写给设计师的开发入门小抄</a><span class="recent-date">2025-03-28</span></li>
+                    <li><a href="#">使用自定义字体提升博客格调</a><span class="recent-date">2025-03-20</span></li>
+                </ul>
+            </div>
+
+            <!-- 分类 / 精选标签 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">🏷️ 探索标签</h3>
+                <div class="tag-cloud">
+                    <span>#HTML/CSS</span>
+                    <span>#前端工程化</span>
+                    <span>#独立博客</span>
+                    <span>#设计灵感</span>
+                    <span>#JavaScript</span>
+                    <span>#读书笔记</span>
+                    <span>#Vue</span>
+                    <span>#React</span>
+                    <span>#生活日常</span>
+                </div>
+            </div>
+
+            <!-- 公告栏 / 小提示 -->
+            <div class="sidebar-widget">
+                <h3 class="widget-title">✨ 关于本站</h3>
+                <div class="bio-text" style="font-size:0.85rem">
+                    本博客是一个完全由HTML/CSS构建的“静网页”，适配手机与电脑，没有任何第三方追踪。所有文字均为原创或深度笔记，希望这里能成为互联网上一处安静的茶座。
+                </div>
+                <hr>
+                <div style="font-size:0.8rem; color:#3e6a8a;">
+                    🚀 推荐在 <a href="#" style="color:#2c6e9e">GitHub</a> 上查看源码
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 页脚区域 -->
+    <footer class="footer">
+        <p>© 2025 静墨叙事 · 由 ❤️ 和 纯手工代码驱动 | 基于 <a href="#">GitHub Pages</a> 发布</p>
+        <p style="margin-top: 0.5rem; font-size:0.75rem;">沉淀思考 · 书写时光 | 本博客所有内容遵循 CC BY-NC 4.0 协议</p>
+    </footer>
+</div>
+
+<!-- 一个小彩蛋：悬浮GitHub风格按钮，增加博客活力（可选） -->
+<a href="https://github.com" class="github-corner" target="_blank" rel="noopener noreferrer">
+    📂 部署指南
+</a>
+
+<script>
+    // 轻量级动态效果：为导航和文章增加一点点本地时间问候（可选）
+    (function() {
+        // 给侧边栏展示当前季节小提示（just for fun）
+        const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+        const now = new Date();
+        const monthName = months[now.getMonth()];
+        const widgetTitles = document.querySelectorAll('.widget-title');
+        for(let i = 0; i < widgetTitles.length; i++) {
+            if(widgetTitles[i].innerText.includes('近期笔墨')) {
+                // 可忽略，只是静态页面的趣味点缀
+                break;
+            }
+        }
+        // 控制台优雅输出
+        console.log(`✨ 静墨叙事博客已载入，${monthName}的阅读时光 ~ 部署到GitHub Pages即可公网访问`);
+    })();
+</script>
+</body>
+</html>
